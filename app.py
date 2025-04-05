@@ -62,6 +62,15 @@ st.dataframe(data.head())
 
 # Visualizations
 st.subheader("📊 Data Visualizations")
+st.markdown("""
+Here’s a breakdown of what each chart reveals:
+- **Churn Distribution** shows how many customers left vs. stayed.
+- **Cashback Amount by Churn** compares average cashback for churned vs. retained users.
+- **Tenure Distribution** shows how long customers have been with the platform.
+- **Satisfaction Score by Churn** visualizes satisfaction spread by churn.
+- **Correlation Heatmap** reveals relationships between numerical features.
+- **Churn by City Tier** identifies regions with higher churn.
+""")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -99,6 +108,16 @@ fig6, ax6 = plt.subplots()
 sns.countplot(data=data, x='CityTier', hue='Churn', palette='Set2', ax=ax6)
 ax6.set_title("Churn by City Tier")
 st.pyplot(fig6)
+
+# Summary insights section
+st.subheader("🧠 Summary Insights")
+st.markdown("""
+- **Cashback**: Customers receiving lower cashback tend to churn more. Loyalty rewards could help improve retention.
+- **Satisfaction**: A strong churn predictor. Customers with low scores should be prioritized for engagement.
+- **Tenure**: Newer customers are more at risk. Focus onboarding efforts on converting them to long-term users.
+- **City Tier**: Churn rates vary by region — localizing campaigns may reduce churn in Tier 2/3 cities.
+- **Correlations**: Cashback and engagement scores show meaningful correlation with retention, suggesting areas to optimize.
+""")
 
 model, feature_cols = train_model(data)
 

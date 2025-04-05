@@ -30,8 +30,11 @@ def preprocess_input(df):
     return df
 
 @st.cache_data
-def load_data():
-    data = pd.read_excel('E Commerce Dataset.xlsx', sheet_name='E Comm')
+def load_data(uploaded_excel=None):
+    if uploaded_excel is not None:
+        data = pd.read_excel(uploaded_excel, sheet_name='E Comm')
+    else:
+        data = pd.read_excel('E Commerce Dataset.xlsx', sheet_name='E Comm')
     numerical_missing = ['Tenure', 'WarehouseToHome', 'HourSpendOnApp', 
                          'OrderAmountHikeFromlastYear', 'CouponUsed', 
                          'OrderCount', 'DaySinceLastOrder']
@@ -47,42 +50,55 @@ def train_model(data):
     model.fit(X, y)
     return model, X.columns
 
-st.title("📊 E-Commerce Churn Analytics Dashboard")
-st.markdown("Explore customer data, uncover trends, and predict churn.")
+st.title("🌈 E-Commerce Churn Analytics Dashboard")
+st.markdown("Explore trends, visualize behavior, and predict customer churn with style.")
 
-data = load_data()
-st.subheader("Raw Dataset")
+# Upload dataset option
+uploaded_excel = st.file_uploader("Upload an updated dataset (Excel)", type=["xlsx"])
+data = load_data(uploaded_excel)
+
+st.subheader("🧾 Raw Dataset")
 st.dataframe(data.head())
 
 # Visualizations
-st.subheader("📈 Data Visualizations")
+st.subheader("📊 Data Visualizations")
 
 col1, col2 = st.columns(2)
 with col1:
     fig1, ax1 = plt.subplots()
-    sns.countplot(x='Churn', data=data, ax=ax1)
+    sns.countplot(x='Churn', data=data, ax=ax1, palette='rainbow')
     ax1.set_title("Churn Distribution")
     st.pyplot(fig1)
     st.markdown("Most customers are retained, but there's a non-trivial churn segment worth investigating.")
 
 with col2:
     fig2, ax2 = plt.subplots()
-    sns.boxplot(x='Churn', y='CashbackAmount', data=data, ax=ax2)
+    sns.boxplot(x='Churn', y='CashbackAmount', data=data, ax=ax2, palette='pastel')
     ax2.set_title("Cashback Amount by Churn")
     st.pyplot(fig2)
     st.markdown("Churned customers seem to receive less cashback on average.")
 
 fig3, ax3 = plt.subplots()
-sns.histplot(data['Tenure'], bins=20, kde=True, ax=ax3)
+sns.histplot(data['Tenure'], bins=20, kde=True, ax=ax3, color='mediumorchid')
 ax3.set_title("Distribution of Customer Tenure")
 st.pyplot(fig3)
 st.markdown("Tenure is right-skewed, indicating many newer customers — retention efforts may be critical early.")
 
 fig4, ax4 = plt.subplots()
-sns.violinplot(x='Churn', y='SatisfactionScore', data=data, ax=ax4)
+sns.violinplot(x='Churn', y='SatisfactionScore', data=data, ax=ax4, palette='coolwarm')
 ax4.set_title("Satisfaction Score by Churn")
 st.pyplot(fig4)
 st.markdown("Customers with low satisfaction scores are more likely to churn.")
+
+fig5, ax5 = plt.subplots()
+sns.heatmap(data.corr(numeric_only=True), annot=True, fmt=".2f", cmap='Spectral', ax=ax5)
+ax5.set_title("Correlation Heatmap")
+st.pyplot(fig5)
+
+fig6, ax6 = plt.subplots()
+sns.countplot(data=data, x='CityTier', hue='Churn', palette='Set2', ax=ax6)
+ax6.set_title("Churn by City Tier")
+st.pyplot(fig6)
 
 model, feature_cols = train_model(data)
 

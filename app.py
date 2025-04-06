@@ -50,8 +50,8 @@ def train_model(data):
     model.fit(X, y)
     return model, X.columns
 
-st.title("🌈 E-Commerce Churn Analytics Dashboard")
-st.markdown("Explore trends, visualize behavior, and predict customer churn with style.")
+st.title("E-Commerce Churn Analytics Dashboard")
+st.markdown("Explore trends, visualize behavior, and predict customer churn.")
 
 # Upload dataset option
 uploaded_excel = st.file_uploader("Upload an updated dataset (Excel)", type=["xlsx"])
@@ -63,7 +63,6 @@ st.dataframe(data.head())
 # Visualizations
 st.subheader("📊 Data Visualizations")
 st.markdown("""
-Here’s a breakdown of what each chart reveals:
 - **Churn Distribution** shows how many customers left vs. stayed.
 - **Cashback Amount by Churn** compares average cashback for churned vs. retained users.
 - **Tenure Distribution** shows how long customers have been with the platform.
@@ -110,7 +109,7 @@ ax6.set_title("Churn by City Tier")
 st.pyplot(fig6)
 
 # Summary insights section
-st.subheader("🧠 Summary Insights")
+st.subheader("Summary")
 st.markdown("""
 - **Cashback**: Customers receiving lower cashback tend to churn more. Loyalty rewards could help improve retention.
 - **Satisfaction**: A strong churn predictor. Customers with low scores should be prioritized for engagement.
@@ -121,7 +120,7 @@ st.markdown("""
 
 model, feature_cols = train_model(data)
 
-st.subheader("🔮 Predict Customer Churn")
+st.subheader("Predict Customer Churn")
 st.markdown("Upload a CSV to get churn predictions.")
 
 uploaded_file = st.file_uploader("Upload your input CSV file", type=["csv"])
@@ -141,11 +140,11 @@ if uploaded_file is not None:
     input_df['Churn Prediction'] = predictions
     input_df['Churn Probability'] = probabilities
 
-    st.success("✅ Prediction complete!")
+    st.success("Prediction complete!")
     st.dataframe(input_df)
 
     st.download_button(
-        label="📥 Download Results as CSV",
+        label="Download Results as CSV",
         data=input_df.to_csv(index=False).encode('utf-8'),
         file_name='churn_predictions_result.csv',
         mime='text/csv'

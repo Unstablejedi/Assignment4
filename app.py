@@ -57,11 +57,11 @@ st.markdown("Explore trends, visualize behavior, and predict customer churn.")
 uploaded_excel = st.file_uploader("Upload an updated dataset (Excel)", type=["xlsx"])
 data = load_data(uploaded_excel)
 
-st.subheader("🧾 Raw Dataset")
+st.subheader("Raw Dataset")
 st.dataframe(data.head())
 
 # Visualizations
-st.subheader("📊 Data Visualizations")
+st.subheader("Data Visualizations")
 st.markdown("""
 - **Churn Distribution** shows how many customers left vs. stayed.
 - **Cashback Amount by Churn** compares average cashback for churned vs. retained users.
